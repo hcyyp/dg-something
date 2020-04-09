@@ -1,0 +1,138 @@
+{
+  "kind": "Deployment",
+  "apiVersion": "extensions/v1beta1",
+  "metadata": {
+    "name": "demo.mysql",
+    "namespace": "demo",
+    "selfLink": "/apis/extensions/v1beta1/namespaces/demo/deployments/demo.mysql",
+    "uid": "802b3570-b204-11e9-84a7-00163e03219b",
+    "resourceVersion": "1628510",
+    "generation": 1,
+    "creationTimestamp": "2019-07-29T13:26:41Z",
+    "annotations": {
+      "deployment.kubernetes.io/revision": "1",
+      "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\",\"metadata\":{\"annotations\":{},\"name\":\"demo.mysql\",\"namespace\":\"demo\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"demo-mysql\"}},\"template\":{\"metadata\":{\"labels\":{\"app\":\"demo-mysql\"}},\"spec\":{\"containers\":[{\"env\":[{\"name\":\"MYSQL_ROOT_PASSWORD\",\"value\":\"datagrand\"}],\"image\":\"dockerhub.datagrand.com/pingtaiyanfa/mysql:8.0.15\",\"livenessProbe\":{\"initialDelaySeconds\":120,\"periodSeconds\":30,\"tcpSocket\":{\"port\":3306}},\"name\":\"demo-mysql\",\"ports\":[{\"containerPort\":3306}],\"resources\":{\"limits\":{\"cpu\":\"100m\",\"memory\":\"1Gi\"},\"requests\":{\"cpu\":\"100m\",\"memory\":\"1Gi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/lib/mysql\",\"name\":\"demo-mysql-vol\",\"subPath\":\"demo/mysql-data\"}]}],\"imagePullSecrets\":[{\"name\":\"pullocrdg\"}],\"nodeSelector\":{\"platform.demo/normal\":\"true\"},\"terminationGracePeriodSeconds\":15,\"volumes\":[{\"name\":\"demo-mysql-vol\",\"persistentVolumeClaim\":{\"claimName\":\"demo-nas-pvc\"}}]}}}}\n"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "matchLabels": {
+        "app": "demo-mysql"
+      }
+    },
+    "template": {
+      "metadata": {
+        "creationTimestamp": null,
+        "labels": {
+          "app": "demo-mysql"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "demo-mysql-vol",
+            "persistentVolumeClaim": {
+              "claimName": "demo-nas-pvc"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "demo-mysql",
+            "image": "dockerhub.datagrand.com/pingtaiyanfa/mysql:8.0.15",
+            "ports": [
+              {
+                "containerPort": 3306,
+                "protocol": "TCP"
+              }
+            ],
+            "env": [
+              {
+                "name": "MYSQL_ROOT_PASSWORD",
+                "value": "datagrand"
+              }
+            ],
+            "resources": {
+              "limits": {
+                "cpu": "100m",
+                "memory": "1Gi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "1Gi"
+              }
+            },
+            "volumeMounts": [
+              {
+                "name": "demo-mysql-vol",
+                "mountPath": "/var/lib/mysql",
+                "subPath": "demo/mysql-data"
+              }
+            ],
+            "livenessProbe": {
+              "tcpSocket": {
+                "port": 3306
+              },
+              "initialDelaySeconds": 120,
+              "timeoutSeconds": 1,
+              "periodSeconds": 30,
+              "successThreshold": 1,
+              "failureThreshold": 3
+            },
+            "terminationMessagePath": "/dev/termination-log",
+            "terminationMessagePolicy": "File",
+            "imagePullPolicy": "IfNotPresent"
+          }
+        ],
+        "restartPolicy": "Always",
+        "terminationGracePeriodSeconds": 15,
+        "dnsPolicy": "ClusterFirst",
+        "nodeSelector": {
+          "platform.demo/normal": "true"
+        },
+        "securityContext": {},
+        "imagePullSecrets": [
+          {
+            "name": "pullocrdg"
+          }
+        ],
+        "schedulerName": "default-scheduler"
+      }
+    },
+    "strategy": {
+      "type": "RollingUpdate",
+      "rollingUpdate": {
+        "maxUnavailable": "25%",
+        "maxSurge": "25%"
+      }
+    },
+    "revisionHistoryLimit": 10,
+    "progressDeadlineSeconds": 600
+  },
+  "status": {
+    "observedGeneration": 1,
+    "replicas": 1,
+    "updatedReplicas": 1,
+    "readyReplicas": 1,
+    "availableReplicas": 1,
+    "conditions": [
+      {
+        "type": "Progressing",
+        "status": "True",
+        "lastUpdateTime": "2019-07-30T11:21:16Z",
+        "lastTransitionTime": "2019-07-30T11:21:16Z",
+        "reason": "NewReplicaSetAvailable",
+        "message": "ReplicaSet \"demo.mysql-54754f89cd\" has successfully progressed."
+      },
+      {
+        "type": "Available",
+        "status": "True",
+        "lastUpdateTime": "2019-08-08T04:50:31Z",
+        "lastTransitionTime": "2019-08-08T04:50:31Z",
+        "reason": "MinimumReplicasAvailable",
+        "message": "Deployment has minimum availability."
+      }
+    ]
+  }
+}
